@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stark Seo Tools - Session Injector</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+    </div>
+
+    <main class="container">
+        <div class="glass-card">
+            <div class="header">
+                <div class="logo">
+                    <i class="fa-solid fa-cookie-bite"></i>
+                </div>
+                <h1>Stark Seo Tools</h1>
+                <p>Advanced Session Management System</p>
+            </div>
+
+            <div class="content">
+                <div class="tools-grid">
+                    <div class="service-item" data-tool-id="chatgpt" data-site-url="https://chatgpt.com">
+                        <div class="service-info">
+                            <i class="fa-solid fa-robot service-icon"></i>
+                            <div class="service-text">
+                                <h3>ChatGPT Plus</h3>
+                                <p>Click to select</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-item" data-tool-id="perplexity" data-site-url="https://www.perplexity.ai">
+                        <div class="service-info">
+                            <i class="fa-solid fa-search service-icon"></i>
+                            <div class="service-text">
+                                <h3>Perplexity Pro</h3>
+                                <p>Click to select</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="service-item" data-tool-id="canva" data-site-url="https://www.canva.com">
+                        <div class="service-info">
+                            <i class="fa-solid fa-palette service-icon"></i>
+                            <div class="service-text">
+                                <h3>Canva Pro</h3>
+                                <p>Click to select</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="selected-tool-display" style="margin: 15px 0; font-size: 14px; color: #94a3b8;">
+                    Selected: <b>ChatGPT Plus</b>
+                </div>
+
+                <button id="inject-btn" class="action-button" data-tool-id="chatgpt"
+                    data-site-url="https://chatgpt.com">
+                    <span class="btn-content">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Inject Session</span>
+                    </span>
+                    <div class="btn-glow"></div>
+                </button>
+
+                <div id="status-message" class="status hidden">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Session injected successfully!</span>
+                </div>
+
+                <button id="disable-ext-btn" class="action-button secondary hidden"
+                    style="margin-top: 15px; background: #ef4444;">
+                    <span class="btn-content">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Disable Other Extensions</span>
+                    </span>
+                </button>
+
+                <p class="verification-text">
+                    Extension Status: <span id="ext-status" class="status-badge pending">Checking...</span>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

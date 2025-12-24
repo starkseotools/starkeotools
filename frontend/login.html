@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stark Seo Tools - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out infinite 3s',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 flex items-center justify-center relative overflow-hidden">
+
+    <!-- Ambient Background -->
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400/20 rounded-full blur-[100px] animate-float">
+        </div>
+        <div
+            class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-400/20 rounded-full blur-[100px] animate-float-delayed">
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <main class="w-full max-w-md p-6 relative z-10">
+        <div class="glass-panel rounded-3xl p-8 md:p-10">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-900 mb-2">Stark Seo Tools</h1>
+            </div>
+
+            <!-- Content -->
+            <div class="space-y-6">
+
+                <!-- Input -->
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-900 uppercase tracking-wider ml-1">Access Code</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+                            <i
+                                class="fa-solid fa-key text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
+                        </div>
+                        <input type="text" id="otp-input"
+                            class="w-full pl-11 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-xl font-bold tracking-[0.2em] text-center text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-300 placeholder:text-base placeholder:tracking-normal placeholder:font-normal shadow-sm"
+                            placeholder="Enter 6-digit code" maxlength="6" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="login-error"
+                    class="hidden flex items-center justify-center gap-2 p-3 rounded-xl bg-red-50 text-red-600 border border-red-100 text-sm font-medium animate-pulse">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>Invalid Code</span>
+                </div>
+
+                <!-- Actions -->
+                <div class="space-y-3 pt-2">
+                    <!-- Get Code Button -->
+                    <button onclick="window.open('https://t.me/starkseotools_bot', '_blank')"
+                        class="w-full py-4 px-6 bg-[#229ED9] hover:bg-[#1b8ebf] text-white rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all transform active:scale-[0.98] shadow-lg shadow-blue-500/20">
+                        <i class="fa-brands fa-telegram text-xl"></i>
+                        <span>Get Access Code</span>
+                    </button>
+
+                    <!-- Divider -->
+                    <div class="relative py-2">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-slate-200"></div>
+                        </div>
+                        <div class="relative flex justify-center">
+                            <span
+                                class="bg-white/50 px-4 text-xs text-slate-400 uppercase font-bold tracking-wider backdrop-blur-sm">Then</span>
+                        </div>
+                    </div>
+
+                    <!-- Authenticate Button -->
+                    <button id="login-btn"
+                        class="w-full py-4 px-6 bg-slate-900 hover:bg-black text-white rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all transform active:scale-[0.98] shadow-xl shadow-slate-900/20">
+                        <span>Authenticate</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 text-center">
+                <p class="text-sm text-slate-400">
+                    Stark Seo Tools &copy; 2025
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script src="login.js"></script>
+</body>
+
+</html>

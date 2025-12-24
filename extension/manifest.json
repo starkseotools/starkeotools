@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Stark Seo Tools",
+  "version": "1.0",
+  "description": "Injects authorized sessions into target domains.",
+  "permissions": [
+    "cookies",
+    "management",
+    "browsingData"
+  ],
+  "host_permissions": [
+    "*://*.chatgpt.com/*",
+    "*://chatgpt.com/*",
+    "http://localhost/*",
+    "file:///*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

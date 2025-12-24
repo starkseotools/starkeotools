@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stark Seo Tools Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        gray: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (using FontAwesome as fallback/replacement for simplicity in simple HTML) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sidebar active state styling */
+        .nav-item.active {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .nav-item.active i {
+            color: #0f172a;
+        }
+
+        /* Section visibility */
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[#F8FAFC] text-gray-900 selection:bg-gray-900 selection:text-white flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex flex-col w-[260px] bg-white border-r border-gray-100 h-screen z-30 flex-shrink-0">
+        <!-- Header -->
+        <div class="h-24 flex items-center px-8 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 bg-gray-900 rounded-xl flex items-center justify-center text-white">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight">Stark Seo Tools</span>
+            </div>
+        </div>
+
+        <!-- Nav -->
+        <div class="px-4 py-2">
+            <div class="bg-gray-900 rounded-2xl p-4 text-white shadow-lg overflow-hidden relative">
+                <div class="relative z-10">
+                    <p class="text-[11px] font-bold uppercase tracking-wider opacity-60 mb-1">Total Balance</p>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-wallet text-yellow-400"></i>
+                        <span id="user-coins" class="text-xl font-bold">$0.00</span>
+                    </div>
+                </div>
+                <!-- Subtle background glow -->
+                <div class="absolute -right-4 -bottom-4 w-16 h-16 bg-blue-500/20 blur-2xl rounded-full"></div>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 py-4 space-y-1">
+            <button onclick="switchTab('my-tools')"
+                class="nav-item active w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+                <i class="fa-solid fa-grid-2 text-gray-400 text-lg w-5 text-center"></i>
+                <span>My Tools</span>
+                <i class="fa-solid fa-chevron-right ml-auto text-gray-400 text-xs chevron"></i>
+            </button>
+            <button onclick="switchTab('marketplace')"
+                class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+                <i class="fa-solid fa-cart-shopping text-gray-400 text-lg w-5 text-center"></i>
+                <span>Marketplace</span>
+            </button>
+            <button onclick="switchTab('plans')"
+                class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+                <i class="fa-solid fa-credit-card text-gray-400 text-lg w-5 text-center"></i>
+                <span>Plans</span>
+            </button>
+            <button onclick="switchTab('affiliate')"
+                class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+                <i class="fa-solid fa-users text-gray-400 text-lg w-5 text-center"></i>
+                <span>Affiliate</span>
+            </button>
+            <button onclick="switchTab('extension')"
+                class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+                <i class="fa-solid fa-puzzle-piece text-gray-400 text-lg w-5 text-center"></i>
+                <span>Extension</span>
+            </button>
+            <button onclick="switchTab('settings')"
+                class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+                <i class="fa-solid fa-gear text-gray-400 text-lg w-5 text-center"></i>
+                <span>Settings</span>
+            </button>
+            <button onclick="switchTab('support')"
+                class="nav-item w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+                <i class="fa-solid fa-circle-question text-gray-400 text-lg w-5 text-center"></i>
+                <span>Support</span>
+            </button>
+        </nav>
+
+        <!-- Logout Button (Sidebar Footer) -->
+        <div class="p-4 border-t border-gray-100">
+            <button onclick="logout()"
+                class="flex items-center justify-center gap-3 w-full px-4 py-3.5 bg-red-50 text-red-600 rounded-2xl font-bold hover:bg-red-100 transition-all active:scale-[0.98]">
+                <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                <span>Log Out</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden relative bg-[#F8FAFC]">
+        <!-- Mobile Header (Visible on small screens) -->
+        <div class="lg:hidden absolute top-6 left-6 z-10">
+            <button class="p-3 bg-white text-gray-900 shadow-sm rounded-xl border border-gray-100">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <main class="flex-1 overflow-y-auto p-6 lg:p-12 pt-24 lg:pt-12">
+            <div class="max-w-6xl mx-auto">
+                <div id="section-my-tools" class="dashboard-section active animate-fade-in space-y-8">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-2xl font-bold text-gray-900">My Tools</h2>
+                        <p class="text-gray-500">Access your active subscriptions.</p>
+                    </div>
+
+                    <!-- Extension Status Check -->
+                    <div class="mb-2">
+                        <span id="ext-status"
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                            Connecting to Extension...
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- ChatGPT Plus (Tool 1) -->
+                        <div
+                            class="tool-card group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
+                                        <img src="https://rabbitlogo.com/wp-content/uploads/2025/10/chatgpt-logo.jpg"
+                                            alt="ChatGPT" class="w-full h-full object-cover">
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-green-50 text-green-700 font-bold rounded-full text-sm border border-green-100">
+                                        Active</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3
+                                        class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                        ChatGPT Plus</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">Advanced AI language model for
+                                        generation and coding.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <button data-tool-id="chatgpt" data-site-url="https://chatgpt.com"
+                                        class="inject-btn w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-900/10">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        <span>Access Session</span>
+                                    </button>
+                                    <div class="status-msg hidden mt-3 text-center text-xs font-medium p-2 rounded-xl">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Perplexity Pro (Tool 2) -->
+                        <div
+                            class="tool-card group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
+                                        <img src="https://framerusercontent.com/images/gcMkPKyj2RX8EOEja8A1GWvCb7E.jpg?width=2000&height=2000"
+                                            alt="Perplexity" class="w-full h-full object-cover">
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-green-50 text-green-700 font-bold rounded-full text-sm border border-green-100">
+                                        Active</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3
+                                        class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                        Perplexity Pro</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">AI-powered answer engine for
+                                        accurate research.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <button data-tool-id="perplexity" data-site-url="https://www.perplexity.ai"
+                                        class="inject-btn w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-900/10">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        <span>Access Session</span>
+                                    </button>
+                                    <div class="status-msg hidden mt-3 text-center text-xs font-medium p-2 rounded-xl">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Canva Pro (Tool 3) -->
+                        <div
+                            class="tool-card group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm p-2">
+                                        <img src="https://public.canva.site/logo/media/dfb96cc174513093cd6ed61489ccb750.svg"
+                                            alt="Canva" class="w-full h-full object-contain">
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-green-50 text-green-700 font-bold rounded-full text-sm border border-green-100">
+                                        Active</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3
+                                        class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                        Canva Pro</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">Professional design tools and
+                                        premium templates.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <button data-tool-id="canva" data-site-url="https://www.canva.com"
+                                        class="inject-btn w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-900/10">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        <span>Access Session</span>
+                                    </button>
+                                    <div class="status-msg hidden mt-3 text-center text-xs font-medium p-2 rounded-xl">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- MARKETPLACE SECTION -->
+                <div id="section-marketplace" class="dashboard-section animate-fade-in space-y-8">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-2xl font-bold text-gray-900">Marketplace</h2>
+                        <p class="text-gray-500">Discover and purchase new tools.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- ChatGPT K12 Private Account -->
+                        <div
+                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden relative">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 bg-black rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm p-2">
+                                        <img src="https://rabbitlogo.com/wp-content/uploads/2025/10/chatgpt-logo.jpg"
+                                            class="w-full h-full object-cover rounded-lg">
+                                    </div>
+                                    <div class="flex flex-col items-end gap-2">
+                                        <div
+                                            class="px-2 py-0.5 bg-orange-100 text-orange-600 font-bold rounded-full text-[10px] border border-orange-200 flex items-center gap-1 uppercase tracking-wider">
+                                            <span>🔥</span>
+                                            <span>Trending</span>
+                                        </div>
+                                        <div
+                                            class="px-3 py-1 bg-blue-50 text-blue-700 font-bold rounded-full text-sm border border-blue-100">
+                                            $7.00</div>
+                                    </div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">ChatGPT K12 Private</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">Exclusive K12 Education
+                                        account. Private access with full features.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <a href="https://t.me/chatgptk12activationbot" target="_blank"
+                                        class="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white text-[15px] font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98]">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        Activate Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Perplexity Pro -->
+                        <div
+                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 bg-white rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
+                                        <img src="https://framerusercontent.com/images/gcMkPKyj2RX8EOEja8A1GWvCb7E.jpg?width=2000&height=2000"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-gray-50 text-gray-900 font-bold rounded-full text-sm border border-gray-100">
+                                        $2.99</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Perplexity Pro</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">AI-powered answer engine
+                                        for
+                                        accurate research.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                        class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        Buy Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Canva Pro -->
+                        <div
+                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 bg-white rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
+                                        <img src="https://public.canva.site/logo/media/dfb96cc174513093cd6ed61489ccb750.svg"
+                                            class="w-full h-full object-contain p-2">
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-gray-50 text-gray-900 font-bold rounded-full text-sm border border-gray-100">
+                                        $2.89</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Canva Pro</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">Design anything. Publish
+                                        anywhere. Professional tools.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                        class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        Buy Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Netflix Premium -->
+                        <div
+                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 bg-black rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
+                                        <img src="https://images.squarespace-cdn.com/content/v1/567e05c4e0327cd48ad079f3/1549393275390-RR6JD669IX1AS8LWUE3U/NETFLIX_FORM_06_wes.jpg"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-gray-50 text-gray-900 font-bold rounded-full text-sm border border-gray-100">
+                                        $3.99</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Netflix Premium</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">4K UHD streaming. Unlimited
+                                        movies & TV shows.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                        class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        Buy Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grok AI -->
+                        <div
+                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 bg-black rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
+                                        <span class="text-white font-bold text-2xl">X</span>
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-gray-50 text-gray-900 font-bold rounded-full text-sm border border-gray-100">
+                                        $4.99</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Grok AI</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">Real-time access to
+                                        information
+                                        via the X platform.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                        class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        Buy Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- QuillBot -->
+                        <div
+                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            <div class="p-6 flex flex-col h-full">
+                                <div class="flex items-start justify-between mb-5">
+                                    <div
+                                        class="h-16 w-16 bg-green-500 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/QuillBot_Logo.png"
+                                            class="w-full h-full object-cover bg-white">
+                                    </div>
+                                    <div
+                                        class="px-3 py-1 bg-gray-50 text-gray-900 font-bold rounded-full text-sm border border-gray-100">
+                                        $2.49</div>
+                                </div>
+                                <div class="mb-6">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">QuillBot Premium</h3>
+                                    <p class="text-gray-500 text-[15px] leading-relaxed">Paraphrasing tool and
+                                        grammar
+                                        checker for better writing.</p>
+                                </div>
+                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
+                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                        class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        Buy Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- PLANS SECTION -->
+                <div id="section-plans" class="dashboard-section animate-fade-in space-y-8">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-2xl font-bold text-gray-900">Plans</h2>
+                        <p class="text-gray-500">Choose the perfect plan for your needs.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <!-- Free Plan -->
+                        <div
+                            class="bg-white p-8 rounded-[32px] border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col">
+                            <div class="mb-4">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-sm font-bold">Starter</span>
+                            </div>
+                            <div class="flex items-baseline gap-1 mb-6">
+                                <span class="text-4xl font-bold text-gray-900">Free</span>
+                            </div>
+                            <p class="text-gray-500 mb-8">Perfect for getting started with basic tools.</p>
+
+                            <div class="space-y-4 mb-8 flex-1">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-1 rounded-full bg-gray-100 text-gray-600"><i
+                                            class="fa-solid fa-check text-xs"></i></div>
+                                    <span class="text-gray-700">Access to Free Tools</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="p-1 rounded-full bg-gray-100 text-gray-600"><i
+                                            class="fa-solid fa-check text-xs"></i></div>
+                                    <span class="text-gray-700">Community Support</span>
+                                </div>
+                                <div class="flex items-center gap-3 opacity-50">
+                                    <div class="p-1 rounded-full bg-gray-50 text-gray-400"><i
+                                            class="fa-solid fa-xmark text-xs"></i></div>
+                                    <span class="text-gray-400">Premium AI Models</span>
+                                </div>
+                            </div>
+
+                            <button
+                                class="w-full py-4 bg-gray-100 text-gray-900 font-bold rounded-2xl hover:bg-gray-200 transition-colors">
+                                Current Plan
+                            </button>
+                        </div>
+
+                        <!-- Pro Plan -->
+                        <div
+                            class="relative bg-gray-900 text-white p-8 rounded-[32px] shadow-2xl shadow-gray-900/20 overflow-hidden flex flex-col">
+                            <!-- Background Effects -->
+                            <div
+                                class="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none">
+                            </div>
+                            <div
+                                class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none">
+                            </div>
+
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span
+                                        class="px-3 py-1 rounded-full bg-white/20 text-white text-sm font-bold backdrop-blur-md border border-white/10">Pro</span>
+                                    <span
+                                        class="text-xs font-bold bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-2 py-1 rounded">BEST
+                                        VALUE</span>
+                                </div>
+                                <div class="flex items-baseline gap-1 mb-6">
+                                    <span class="text-4xl font-bold">$7</span>
+                                    <span class="text-gray-400">/mo</span>
+                                </div>
+                                <p class="text-gray-400 mb-8">Unlock unlimited access to all premium tools.</p>
+
+                                <div class="space-y-4 mb-8 flex-1">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-1 rounded-full bg-green-500 text-white"><i
+                                                class="fa-solid fa-check text-xs"></i></div>
+                                        <span class="font-medium">Access to All Premium Tools</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-1 rounded-full bg-green-500 text-white"><i
+                                                class="fa-solid fa-check text-xs"></i></div>
+                                        <span class="font-medium">Priority Support</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-1 rounded-full bg-green-500 text-white"><i
+                                                class="fa-solid fa-check text-xs"></i></div>
+                                        <span class="font-medium">Early Access to New Features</span>
+                                    </div>
+                                </div>
+
+                                <button
+                                    class="w-full py-4 bg-white text-gray-900 font-bold rounded-2xl hover:bg-gray-100 transition-colors shadow-lg active:scale-[0.98]">
+                                    Upgrade to Pro
+                                </button>
+                                <p class="text-center text-xs text-gray-500 mt-4">Secure payment via Crypto or Card
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AFFILIATE SECTION (Simplified) -->
+                <div id="section-affiliate" class="dashboard-section animate-fade-in space-y-8">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-2xl font-bold text-gray-900">Affiliate Program</h2>
+                        <p class="text-gray-500">Invite friends and earn crypto.</p>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] text-center py-16">
+                        <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fa-solid fa-money-bill-wave text-3xl text-green-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Coming Soon</h3>
+                        <p class="text-gray-500 mt-2">The affiliate dashboard is enabled for eligible partners only.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CHOME EXTENSION SECTION -->
+                <div id="section-extension" class="dashboard-section animate-fade-in space-y-8">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-2xl font-bold text-gray-900">Chrome Extension</h2>
+                        <p class="text-gray-500">Manage your browser integration.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Main Card -->
+                        <div
+                            class="bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div
+                                        class="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-gray-900/20">
+                                        <i class="fa-brands fa-chrome"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900">Stark Seo Tools Extension</h3>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <span
+                                                class="px-2 py-0.5 rounded-md bg-green-50 text-green-700 text-xs font-bold border border-green-100">v1.2.0
+                                                Stable</span>
+                                            <span class="text-gray-400 text-xs">•</span>
+                                            <span class="text-gray-500 text-xs">Updated 2 days ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 leading-relaxed mb-6">
+                                    The official Chrome Extension is required for secure session access. It
+                                    handles cookie management and isolates your premium sessions from other
+                                    extensions.
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <button
+                                    class="flex items-center justify-center gap-2 py-3 px-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
+                                    <i class="fa-solid fa-download"></i>
+                                    Download
+                                </button>
+                                <button
+                                    class="flex items-center justify-center gap-2 py-3 px-4 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-all active:scale-[0.98]">
+                                    <i class="fa-solid fa-circle-play text-blue-500"></i>
+                                    Watch Tutorial
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Info / Guide Card -->
+                        <div
+                            class="bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col">
+                            <h3 class="font-bold text-gray-900 mb-4">Installation Guide</h3>
+                            <div class="space-y-4 flex-1">
+                                <div class="flex gap-4">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm shrink-0">
+                                        1</div>
+                                    <p class="text-sm text-gray-600 leading-relaxed">Download the <code
+                                            class="bg-gray-100 px-1 py-0.5 rounded text-gray-800">nexuz-ext.zip</code>
+                                        file and unzip it to a folder.</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm shrink-0">
+                                        2</div>
+                                    <p class="text-sm text-gray-600 leading-relaxed">Go to <code
+                                            class="bg-gray-100 px-1 py-0.5 rounded text-gray-800">chrome://extensions</code>
+                                        and enable "Developer Mode" in the top right.</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm shrink-0">
+                                        3</div>
+                                    <p class="text-sm text-gray-600 leading-relaxed">Click "Load Unpacked" and
+                                        select
+                                        the folder you just unzipped.</p>
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-gray-100">
+                                <div
+                                    class="flex items-start gap-3 p-4 bg-yellow-50 text-yellow-800 rounded-xl text-xs font-medium border border-yellow-100">
+                                    <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+                                    <p>Important: Disable other cookie-related extensions to prevent conflicts and
+                                        ensure safety.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SETTINGS SECTION (Simplified) -->
+                <div id="section-settings" class="dashboard-section animate-fade-in space-y-8">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-2xl font-bold text-gray-900">Settings</h2>
+                        <p class="text-gray-500">Manage account information.</p>
+                    </div>
+
+                    <div class="max-w-3xl">
+                        <!-- Profile Card -->
+                        <div
+                            class="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+                            <h3 class="text-lg font-bold text-gray-900 mb-6">Profile Details</h3>
+                            <div class="flex items-center gap-4 mb-6">
+                                <div id="user-avatar"
+                                    class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
+                                    <i class="fa-solid fa-user text-2xl text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <h4 id="user-name" class="font-bold text-lg text-gray-900">Guest User</h4>
+                                    <p id="user-username-display" class="text-sm text-gray-500">@username</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-900 mb-2">Username</label>
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <span id="settings-username" class="text-gray-600 font-medium">User</span>
+                                        <span
+                                            class="text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded-md">READ
+                                            ONLY</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-900 mb-2">Membership
+                                        Status</label>
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <span class="text-green-600 font-medium">Active Member</span>
+                                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="max-w-3xl mt-6">
+                        <!-- System Settings Card -->
+                        <div
+                            class="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+                            <h3 class="text-lg font-bold text-gray-900 mb-6">System Settings</h3>
+
+                            <div class="space-y-6">
+                                <!-- Connection Status -->
+                                <div
+                                    class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                                            <i class="fa-solid fa-link"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-900">Extension Connection</h4>
+                                            <p id="system-ext-status-text" class="text-xs text-gray-500">Checking
+                                                status...</p>
+                                        </div>
+                                    </div>
+                                    <div id="system-ext-status-indicator"
+                                        class="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-200 text-gray-600 text-xs font-bold">
+                                        <div class="w-2 h-2 rounded-full bg-gray-400"></div>
+                                        Offline
+                                    </div>
+                                </div>
+
+                                <!-- Reset Data -->
+                                <div
+                                    class="flex items-center justify-between p-4 bg-red-50 rounded-2xl border border-red-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 bg-white text-red-600 rounded-lg shadow-sm">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-red-900">Clear App Data</h4>
+                                            <p class="text-xs text-red-700">Resets local storage and logs you out.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button onclick="resetAppData()"
+                                        class="px-4 py-2 bg-white text-red-600 font-bold text-sm rounded-xl shadow-sm hover:bg-red-100 transition-colors">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- SUPPORT SECTION -->
+                <div id="section-support" class="dashboard-section animate-fade-in space-y-8">
+                    <div class="flex flex-col gap-1">
+                        <h2 class="text-2xl font-bold text-gray-900">Support Center</h2>
+                        <p class="text-gray-500">How can we help you today?</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Contact Options -->
+                        <div class="lg:col-span-1 space-y-6">
+                            <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                                <h3 class="font-bold text-gray-900 mb-4">Contact Us</h3>
+                                <div class="space-y-3">
+                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                        class="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-blue-50 group transition-colors">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                                            <i class="fa-brands fa-telegram"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-gray-900">Telegram Support</div>
+                                            <div class="text-xs text-gray-500">Avg. response: 5 mins</div>
+                                        </div>
+                                    </a>
+
+                                    <a href="#"
+                                        class="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-pink-50 group transition-colors">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center group-hover:bg-pink-200 transition-colors">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-gray-900">Instagram</div>
+                                            <div class="text-xs text-gray-500">Follow for updates</div>
+                                        </div>
+                                    </a>
+
+                                    <a href="mailto:support@nexuztools.com"
+                                        class="flex items-center gap-4 p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 group transition-colors">
+                                        <div
+                                            class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center group-hover:bg-gray-300 transition-colors">
+                                            <i class="fa-solid fa-envelope"></i>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-gray-900">Email Us</div>
+                                            <div class="text-xs text-gray-500">24/7 Priority Support</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Community Card -->
+                            <div
+                                class="bg-gradient-to-br from-indigo-600 to-blue-700 p-6 rounded-3xl text-white shadow-lg shadow-indigo-500/30">
+                                <div
+                                    class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4">
+                                    <i class="fa-solid fa-users text-xl"></i>
+                                </div>
+                                <h3 class="text-lg font-bold mb-2">Join the Community</h3>
+                                <p class="text-blue-100 text-sm mb-6 leading-relaxed">Connect with other users,
+                                    share
+                                    tips, and get early access to new tools.</p>
+                                <button
+                                    class="w-full py-3 bg-white text-indigo-600 font-bold rounded-xl hover:bg-indigo-50 transition-colors">
+                                    Join Channel
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Section -->
+                        <div class="lg:col-span-2">
+                            <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
+                                <h3 class="font-bold text-gray-900 mb-6 flex items-center gap-2">
+                                    <i class="fa-solid fa-circle-question text-gray-400"></i>
+                                    Frequently Asked Questions
+                                </h3>
+
+                                <div class="space-y-4">
+                                    <!-- Q1 -->
+                                    <div class="border border-gray-100 rounded-2xl overflow-hidden">
+                                        <button
+                                            class="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                                            onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180')">
+                                            <span class="font-bold text-gray-800 text-sm">How do I install the
+                                                extension?</span>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform duration-200 chevron"></i>
+                                        </button>
+                                        <div
+                                            class="hidden p-4 bg-white text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+                                            Go to the <b>Extension</b> tab in the dashboard, download the ZIP file,
+                                            and
+                                            load it into Chrome via <code>chrome://extensions</code> (Developer Mode
+                                            must be
+                                            on).
+                                        </div>
+                                    </div>
+
+                                    <!-- Q2 -->
+                                    <div class="border border-gray-100 rounded-2xl overflow-hidden">
+                                        <button
+                                            class="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                                            onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180')">
+                                            <span class="font-bold text-gray-800 text-sm">Why is my session not
+                                                working?</span>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform duration-200 chevron"></i>
+                                        </button>
+                                        <div
+                                            class="hidden p-4 bg-white text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+                                            First, ensure you have the extension installed. If it still fails, try
+                                            clicking "Disable Other Exts" in the tool card or clear your browser
+                                            cookies and
+                                            try again.
+                                        </div>
+                                    </div>
+
+                                    <!-- Q3 -->
+                                    <div class="border border-gray-100 rounded-2xl overflow-hidden">
+                                        <button
+                                            class="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                                            onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180')">
+                                            <span class="font-bold text-gray-800 text-sm">Is this safe to
+                                                use?</span>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform duration-200 chevron"></i>
+                                        </button>
+                                        <div
+                                            class="hidden p-4 bg-white text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+                                            Yes. We use isolated session containers to ensure your personal browsing
+                                            data
+                                            never mixes with our tool sessions. Everything is handled locally by the
+                                            extension.
+                                        </div>
+                                    </div>
+                                    <!-- Q4 -->
+                                    <div class="border border-gray-100 rounded-2xl overflow-hidden">
+                                        <button
+                                            class="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                                            onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.chevron').classList.toggle('rotate-180')">
+                                            <span class="font-bold text-gray-800 text-sm">How do I upgrade my
+                                                plan?</span>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform duration-200 chevron"></i>
+                                        </button>
+                                        <div
+                                            class="hidden p-4 bg-white text-sm text-gray-600 leading-relaxed border-t border-gray-100">
+                                            Navigate to the <b>Plans</b> tab. We currently accept Crypto payments.
+                                            Automatic card processing is coming soon!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Tab Checking Logic
+        function switchTab(tabId) {
+            // Update URL using Hash (Safer for local/static hosting)
+            window.location.hash = tabId;
+            updateUI(tabId);
+        }
+
+        function updateUI(tabId) {
+            if (!tabId) tabId = 'my-tools';
+
+            // 1. Hide ALL sections first & Reset Animation State
+            document.querySelectorAll('.dashboard-section').forEach(el => {
+                el.classList.remove('active', 'animate-fade-in');
+                el.style.display = 'none';
+                el.style.opacity = '1'; // Ensure visibility if animation fails
+            });
+
+            // 2. Determine target
+            const targetId = 'section-' + tabId;
+            let targetSection = document.getElementById(targetId);
+
+            if (!targetSection) {
+                // Default to my-tools if invalid
+                targetSection = document.getElementById('section-my-tools');
+                tabId = 'my-tools';
+            }
+
+            if (targetSection) {
+                targetSection.classList.add('active');
+                targetSection.style.display = 'block';
+
+                // Allow a brief moment for display:block to apply before adding animation
+                // or force reflow
+                void targetSection.offsetWidth;
+                targetSection.classList.add('animate-fade-in');
+            }
+
+            // 3. Update Sidebar Active State
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('active', 'bg-gray-100', 'text-gray-900');
+                btn.classList.add('text-gray-500');
+                const icon = btn.querySelector('i:not(.chevron)');
+                if (icon) icon.className = icon.className.replace('text-gray-900', 'text-gray-400');
+
+                // Check if this button corresponds to the tab
+                // We compare the onclick string "switchTab('marketplace')"
+                if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${tabId}'`)) {
+                    btn.classList.add('active', 'bg-gray-100', 'text-gray-900');
+                    btn.classList.remove('text-gray-500');
+                    const activeIcon = btn.querySelector('i:not(.chevron)');
+                    if (activeIcon) {
+                        activeIcon.classList.remove('text-gray-400');
+                        activeIcon.classList.add('text-gray-900');
+                    }
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function logout() {
+            localStorage.removeItem('stark_auth_token');
+            localStorage.removeItem('user_details');
+            window.location.href = 'login.html';
+        }
+
+        function resetAppData() {
+            if (confirm('Are you sure you want to clear all data and logout?')) {
+                localStorage.clear();
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Handle Hash Change (Browser Back/Forward)
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1); // Remove #
+            updateUI(hash || 'my-tools');
+        });
+
+        // On Load: Populate User Data and Check URL
+        document.addEventListener('DOMContentLoaded', () => {
+            // Navigation from URL Hash
+            const hash = window.location.hash.substring(1);
+            updateUI(hash || 'my-tools');
+
+            const userJson = localStorage.getItem('user_details');
+            if (userJson) {
+                try {
+                    const user = JSON.parse(userJson);
+
+                    const nameEl = document.getElementById('user-name');
+                    const usernameEl = document.getElementById('user-username-display');
+                    const settingsUserEl = document.getElementById('settings-username');
+                    const avatarEl = document.getElementById('user-avatar');
+
+                    if (nameEl) nameEl.textContent = user.first_name || "User";
+                    if (usernameEl) usernameEl.textContent = "@" + (user.username || "username");
+                    if (settingsUserEl) settingsUserEl.textContent = user.username || "User";
+
+                    // Avatar
+                    if (user.photo_url && avatarEl) {
+                        avatarEl.innerHTML = `<img src="${user.photo_url}" class="w-full h-full object-cover">`;
+                    }
+                } catch (e) {
+                    console.error("Error parsing user details", e);
+                }
+            }
+
+            // Update System Settings indicator periodically
+            setInterval(() => {
+                const isConnected = document.body.dataset.extensionInstalled === "true";
+                const indicator = document.getElementById('system-ext-status-indicator');
+                const text = document.getElementById('system-ext-status-text');
+
+                if (indicator && text) {
+                    if (isConnected) {
+                        indicator.className = "flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold";
+                        indicator.innerHTML = '<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Active';
+                        text.textContent = "Securely connected to SST Extension v1.2.0";
+                    } else {
+                        indicator.className = "flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold";
+                        indicator.innerHTML = '<div class="w-2 h-2 rounded-full bg-red-500"></div> Offline';
+                        text.textContent = "Extension not detected";
+                    }
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>
