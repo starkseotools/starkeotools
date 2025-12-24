@@ -80,13 +80,15 @@ try {
 
     // 1. MAIN BOT
     if (BOT_TOKEN) {
-        if (isProduction) {
+        if (isProduction && APP_URL) {
             bot = new TelegramBot(BOT_TOKEN);
-            bot.setWebHook(`${APP_URL}/api/webhook/main`);
+            bot.setWebHook(`${APP_URL}/api/webhook/main`)
+                .then(() => console.log("Main Webhook Set"))
+                .catch(e => console.error("Main Webhook Error", e.message));
         } else {
             bot = new TelegramBot(BOT_TOKEN, { polling: true });
         }
-        console.log(`Main Bot Initialized (${isProduction ? 'Webhook' : 'Polling'})`);
+        console.log(`Main Bot Initialized (${isProduction && APP_URL ? 'Webhook' : 'Polling'})`);
 
         bot.setMyCommands([
             { command: 'start', description: 'Welcome & How to use' },
@@ -207,13 +209,15 @@ Need help? Just type /help.`;
 
     // 2. K12 SPECIALIZED BOT
     if (K12_BOT_TOKEN) {
-        if (isProduction) {
+        if (isProduction && APP_URL) {
             k12Bot = new TelegramBot(K12_BOT_TOKEN);
-            k12Bot.setWebHook(`${APP_URL}/api/webhook/k12`);
+            k12Bot.setWebHook(`${APP_URL}/api/webhook/k12`)
+                .then(() => console.log("K12 Webhook Set"))
+                .catch(e => console.error("K12 Webhook Error", e.message));
         } else {
             k12Bot = new TelegramBot(K12_BOT_TOKEN, { polling: true });
         }
-        console.log(`K12 Bot Initialized (${isProduction ? 'Webhook' : 'Polling'})`);
+        console.log(`K12 Bot Initialized (${isProduction && APP_URL ? 'Webhook' : 'Polling'})`);
         const userState = new Map(); // Tracks conversational state
         const supportTickets = new Map(); // Maps Admin Message ID -> User ID for replies
 

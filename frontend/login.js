@@ -24,10 +24,17 @@ loginBtn.addEventListener('click', async () => {
             body: JSON.stringify({ otp })
         });
 
-        const data = await response.json();
+        let data;
+        const text = await response.text();
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error("Invalid JSON response:", text);
+            showError("Server returned an invalid response (500). Check Vercel logs.");
+            return;
+        }
 
         if (data.success) {
-            // Store session
             localStorage.setItem('stark_auth_token', data.token);
             if (data.user) {
                 localStorage.setItem('user_details', JSON.stringify(data.user));
@@ -37,7 +44,7 @@ loginBtn.addEventListener('click', async () => {
             showError(data.message || "Authentication Failed");
         }
     } catch (err) {
-        showError("Server Connection Error");
+        showError("Network Error: Could not connect to server.");
         console.error(err);
     } finally {
         setLoading(false);
