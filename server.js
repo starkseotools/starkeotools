@@ -697,6 +697,20 @@ app.post('/api/webhook/oxapay', async (req, res) => {
     res.sendStatus(200);
 });
 
+// Debug Bots Status (Internal Use)
+app.get('/api/debug-bots', (req, res) => {
+    const isProduction = !!process.env.VERCEL_URL;
+    res.json({
+        isProduction,
+        APP_URL,
+        VERCEL_URL: process.env.VERCEL_URL,
+        mainBotMode: (isProduction && APP_URL) ? 'Webhook' : 'Polling',
+        k12BotMode: (isProduction && APP_URL) ? 'Webhook' : 'Polling',
+        mainWebhook: `${APP_URL}/api/webhook/main`,
+        k12Webhook: `${APP_URL}/api/webhook/k12`
+    });
+});
+
 // Routes
 app.post('/api/login', async (req, res) => {
     const { otp } = req.body;
