@@ -18,7 +18,7 @@ const SUPABASE_KEY = process.env.SUPABASE_KEY;
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const K12_BOT_TOKEN = process.env.K12_BOT_TOKEN;
 const ADMIN_ID = process.env.ADMIN_ID;
-const APP_URL = process.env.APP_URL || (process.env.VERCEL_URL ? `https://starkeotools.vercel.app` : null);
+const APP_URL = (process.env.APP_URL || (process.env.VERCEL_URL ? `https://starkeotools.vercel.app` : null))?.trim();
 
 // Supabase Connection
 let supabase = null;
@@ -158,7 +158,7 @@ if (k12Bot) {
             '/balance - Check your balance\n' +
             '/refer - Earn credits by referring friends\n' +
             '/support - Get help';
-        
+
         k12Bot.sendMessage(msg.chat.id, welcomeMessage, { parse_mode: 'Markdown' });
     });
 
@@ -171,11 +171,11 @@ if (k12Bot) {
         const refLink = `https://t.me/chatgptk12activationbot?start=${msg.from.id}`;
         k12Bot.sendMessage(msg.chat.id, `👥 Refer & Earn $0.10 per friend!\n\n🔗 Link: ${refLink}`);
     });
-    
+
     k12Bot.onText(/\/activate/, async (msg) => {
         k12Bot.sendMessage(msg.chat.id, '🔐 *K12 Activation Process*\n\nPlease provide your ChatGPT account credentials:\n\n📧 Email:\n🔑 Password:\n\nSend them in this format:\nemail@example.com password123', { parse_mode: 'Markdown' });
     });
-    
+
     k12Bot.onText(/\/support/, async (msg) => {
         k12Bot.sendMessage(msg.chat.id, '💬 *Support & Help*\n\nNeed assistance? Contact us:\n\n📧 Email: support@starkseotools.com\n💬 Telegram: @StarkSEOSupport\n\nResponse time: 5-15 minutes', { parse_mode: 'Markdown' });
     });
