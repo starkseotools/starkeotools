@@ -63,8 +63,6 @@ const updateUser = async (telegramId, data) => {
     }
 };
 
-// OTP Storage: Map<otp, { expiry: number, user: object, type?: string }>
-const otpStore = new Map();
 // Sessions: Map<token, userObject>
 const sessions = new Map();
 
@@ -144,8 +142,14 @@ Need help? Just type /help.`;
                         });
                     }
 
-                    otpStore.set(otp, { expiry, user: user, type: 'main' });
-                    setTimeout(() => otpStore.delete(otp), 5 * 60 * 1000);
+                    if (supabase) {
+                        await supabase.from('otps').upsert({
+                            otp,
+                            telegramId: userId.toString(),
+                            expiry,
+                            type: 'main'
+                        });
+                    }
 
                     bot.sendMessage(chatId, `🔐 Your Access Code: *${otp}*\n\nValid for 5 minutes.`, { parse_mode: 'Markdown' });
                 } else {
@@ -690,18 +694,23 @@ app.post('/api/login', async (req, res) => {
 
     if (!otp) return res.status(400).json({ success: false, message: 'OTP Required' });
 
-    if (otpStore.has(otp)) {
-        const data = otpStore.get(otp);
-        if (Date.now() < data.expiry) {
+    let otpData = null;
+    if (supabase) {
+        const { data, error } = await supabase.from('otps').select('*').eq('otp', otp).single();
+        if (!error) otpData = data;
+    }
+
+    if (otpData) {
+        if (Date.now() < otpData.expiry) {
             const token = 'stark_' + Math.random().toString(36).substr(2, 9);
-            const user = data.user; // This is already the user object from getUser
+            const user = await getUser(otpData.telegramId);
 
             sessions.set(token, user);
-            otpStore.delete(otp);
+            if (supabase) await supabase.from('otps').delete().eq('otp', otp);
 
             return res.json({ success: true, token, user });
         } else {
-            otpStore.delete(otp);
+            if (supabase) await supabase.from('otps').delete().eq('otp', otp);
             return res.status(401).json({ success: false, message: 'OTP Expired' });
         }
     }
