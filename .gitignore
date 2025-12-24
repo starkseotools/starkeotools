@@ -1,0 +1,11 @@
+node_modules/
+.env
+*.log
+.DS_Store
+.vercel
+database.json
+*.backup
+update_bot_message.js
+add_commands.js
+fix_linebreaks.js
+update_message.ps1
