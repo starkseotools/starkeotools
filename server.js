@@ -227,6 +227,8 @@ app.get('/api/debug-bots', async (req, res) => {
         setupStatus,
         mainBotToken: BOT_TOKEN ? 'Set' : 'Missing',
         k12BotToken: K12_BOT_TOKEN ? 'Set' : 'Missing',
+        k12BotTokenFirst10: K12_BOT_TOKEN ? K12_BOT_TOKEN.substring(0, 10) + '...' : 'N/A',
+        k12BotInstance: k12Bot ? 'Initialized' : 'NOT Initialized',
         mainWebhook: `${APP_URL}/api/webhook/main`,
         k12Webhook: `${APP_URL}/api/webhook/k12`
     });
