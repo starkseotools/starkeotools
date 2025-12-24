@@ -86,21 +86,13 @@ try {
     const isProd = !!process.env.VERCEL_URL;
 
     if (BOT_TOKEN) {
-        if (isProd && APP_URL) {
-            bot = new TelegramBot(BOT_TOKEN);
-            bot.setWebHook(`${APP_URL}/api/webhook/main`).catch(e => console.error("Main Webhook Error", e.message));
-        } else {
-            bot = new TelegramBot(BOT_TOKEN, { polling: true });
-        }
+        bot = new TelegramBot(BOT_TOKEN, (isProd && APP_URL) ? {} : { polling: true });
+        console.log(`Main Bot Initialized (${(isProd && APP_URL) ? 'Webhook Ready' : 'Polling'})`);
     }
 
     if (K12_BOT_TOKEN) {
-        if (isProd && APP_URL) {
-            k12Bot = new TelegramBot(K12_BOT_TOKEN);
-            k12Bot.setWebHook(`${APP_URL}/api/webhook/k12`).catch(e => console.error("K12 Webhook Error", e.message));
-        } else {
-            k12Bot = new TelegramBot(K12_BOT_TOKEN, { polling: true });
-        }
+        k12Bot = new TelegramBot(K12_BOT_TOKEN, (isProd && APP_URL) ? {} : { polling: true });
+        console.log(`K12 Bot Initialized (${(isProd && APP_URL) ? 'Webhook Ready' : 'Polling'})`);
     }
 } catch (error) { console.error("Bots Error:", error.message); }
 
