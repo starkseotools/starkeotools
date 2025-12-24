@@ -173,12 +173,25 @@ app.post('/api/webhook/k12', (req, res) => {
 app.get('/api/webhook/k12', (req, res) => res.send("K12 Webhook is active (POST only)"));
 
 // Debug Bots Status
-app.get('/api/debug-bots', (req, res) => {
+app.get('/api/debug-bots', async (req, res) => {
     const isProd = !!process.env.VERCEL_URL;
+    const setup = req.query.setup === 'true';
+    let setupStatus = 'Not started';
+
+    if (setup && isProd && APP_URL) {
+        try {
+            if (bot) await bot.setWebHook(`${APP_URL}/api/webhook/main`);
+            if (k12Bot) await k12Bot.setWebHook(`${APP_URL}/api/webhook/k12`);
+            setupStatus = 'Success: Webhooks set to ' + APP_URL;
+        } catch (e) {
+            setupStatus = 'Error: ' + e.message;
+        }
+    }
+
     res.json({
         isProd,
         APP_URL,
-        VERCEL_URL: process.env.VERCEL_URL,
+        setupStatus,
         mainBotToken: BOT_TOKEN ? 'Set' : 'Missing',
         k12BotToken: K12_BOT_TOKEN ? 'Set' : 'Missing',
         mainWebhook: `${APP_URL}/api/webhook/main`,
