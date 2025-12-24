@@ -130,36 +130,42 @@ if (k12Bot) {
         console.log('K12 Bot Polling Error:', error.message);
     });
     k12Bot.onText(/\/start/, async (msg) => {
-        const userId = msg.from.id;
-        let user = await getUser(userId);
-        if (!user) {
-            user = await updateUser(userId, {
-                username: msg.from.username,
-                first_name: msg.from.first_name,
-                credits: 0,
-                referralCount: 0
-            });
-        }
-        const welcomeMessage = '🌟 *STARK SEO TOOLS - K12 ACTIVATOR* 🌟\n\n' +
-            'Welcome to the official ChatGPT K12 Education activation portal. We specialize in transforming your standard account into a premium K12 Private EDU session.\n\n' +
-            '💎 *Why ChatGPT K12?*\n' +
-            '• No Usage Limits (Advanced Models)\n' +
-            '• Enhanced AI Creative Capabilities\n' +
-            '• Dedicated Private Session\n' +
-            '• 100% Secure & Reliable\n\n' +
-            '🚀 *Activation Flow:*\n' +
-            '1️⃣ Provide your account credentials.\n' +
-            '2️⃣ Complete the $7.00 manual payment.\n' +
-            '3️⃣ Send screenshot proof.\n' +
-            '4️⃣ Activated in 5-10 minutes!\n\n' +
-            'Upgrade your AI experience now!\n\n' +
-            '📋 *Available Commands:*\n' +
-            '/activate - Start activation process\n' +
-            '/balance - Check your balance\n' +
-            '/refer - Earn credits by referring friends\n' +
-            '/support - Get help';
+        console.log('K12 Bot: /start command received from user', msg.from.id);
+        try {
+            const userId = msg.from.id;
+            let user = await getUser(userId);
+            if (!user) {
+                user = await updateUser(userId, {
+                    username: msg.from.username,
+                    first_name: msg.from.first_name,
+                    credits: 0,
+                    referralCount: 0
+                });
+            }
+            const welcomeMessage = '🌟 *STARK SEO TOOLS - K12 ACTIVATOR* 🌟\n\n' +
+                'Welcome to the official ChatGPT K12 Education activation portal. We specialize in transforming your standard account into a premium K12 Private EDU session.\n\n' +
+                '💎 *Why ChatGPT K12?*\n' +
+                '• No Usage Limits (Advanced Models)\n' +
+                '• Enhanced AI Creative Capabilities\n' +
+                '• Dedicated Private Session\n' +
+                '• 100% Secure & Reliable\n\n' +
+                '🚀 *Activation Flow:*\n' +
+                '1️⃣ Provide your account credentials.\n' +
+                '2️⃣ Complete the $7.00 manual payment.\n' +
+                '3️⃣ Send screenshot proof.\n' +
+                '4️⃣ Activated in 5-10 minutes!\n\n' +
+                'Upgrade your AI experience now!\n\n' +
+                '📋 *Available Commands:*\n' +
+                '/activate - Start activation process\n' +
+                '/balance - Check your balance\n' +
+                '/refer - Earn credits by referring friends\n' +
+                '/support - Get help';
 
-        k12Bot.sendMessage(msg.chat.id, welcomeMessage, { parse_mode: 'Markdown' });
+            await k12Bot.sendMessage(msg.chat.id, welcomeMessage, { parse_mode: 'Markdown' });
+            console.log('K12 Bot: Welcome message sent successfully to', msg.chat.id);
+        } catch (error) {
+            console.error('K12 Bot /start error:', error);
+        }
     });
 
     k12Bot.onText(/\/balance/, async (msg) => {
