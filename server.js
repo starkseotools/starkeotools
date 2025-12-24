@@ -190,8 +190,17 @@ app.post('/api/webhook/main', (req, res) => {
 app.get('/api/webhook/main', (req, res) => res.send("Main Webhook is active (POST only)"));
 
 app.post('/api/webhook/k12', (req, res) => {
-    console.log("K12 Webhook received update");
-    k12Bot?.processUpdate(req.body);
+    console.log("K12 Webhook received update:", JSON.stringify(req.body));
+    try {
+        if (k12Bot) {
+            k12Bot.processUpdate(req.body);
+            console.log("K12 update processed successfully");
+        } else {
+            console.error("K12 Bot not initialized!");
+        }
+    } catch (error) {
+        console.error("K12 Webhook error:", error);
+    }
     res.sendStatus(200);
 });
 app.get('/api/webhook/k12', (req, res) => res.send("K12 Webhook is active (POST only)"));
