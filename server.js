@@ -18,7 +18,7 @@ const SUPABASE_KEY = process.env.SUPABASE_KEY;
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const K12_BOT_TOKEN = process.env.K12_BOT_TOKEN;
 const ADMIN_ID = process.env.ADMIN_ID;
-const APP_URL = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
+const APP_URL = process.env.APP_URL || (process.env.VERCEL_URL ? `https://starkeotools.vercel.app` : null);
 
 // Supabase Connection
 let supabase = null;
@@ -158,8 +158,33 @@ if (k12Bot) {
 }
 
 // Webhook Handlers
-app.post('/api/webhook/main', (req, res) => { bot?.processUpdate(req.body); res.sendStatus(200); });
-app.post('/api/webhook/k12', (req, res) => { k12Bot?.processUpdate(req.body); res.sendStatus(200); });
+app.post('/api/webhook/main', (req, res) => {
+    console.log("Main Webhook received update");
+    bot?.processUpdate(req.body);
+    res.sendStatus(200);
+});
+app.get('/api/webhook/main', (req, res) => res.send("Main Webhook is active (POST only)"));
+
+app.post('/api/webhook/k12', (req, res) => {
+    console.log("K12 Webhook received update");
+    k12Bot?.processUpdate(req.body);
+    res.sendStatus(200);
+});
+app.get('/api/webhook/k12', (req, res) => res.send("K12 Webhook is active (POST only)"));
+
+// Debug Bots Status
+app.get('/api/debug-bots', (req, res) => {
+    const isProd = !!process.env.VERCEL_URL;
+    res.json({
+        isProd,
+        APP_URL,
+        VERCEL_URL: process.env.VERCEL_URL,
+        mainBotToken: BOT_TOKEN ? 'Set' : 'Missing',
+        k12BotToken: K12_BOT_TOKEN ? 'Set' : 'Missing',
+        mainWebhook: `${APP_URL}/api/webhook/main`,
+        k12Webhook: `${APP_URL}/api/webhook/k12`
+    });
+});
 
 // Login API
 app.post('/api/login', async (req, res) => {
