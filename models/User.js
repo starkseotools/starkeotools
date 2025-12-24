@@ -1,15 +1,12 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    telegramId: { type: String, required: true, unique: true },
+    telegramId: { type: Number, required: true, unique: true },
     username: String,
-    first_name: String,
-    photo_url: String,
-    credits: { type: Number, default: 0.00 },
-    hasK12: { type: Boolean, default: false },
-    referredBy: String,
-    referralCount: { type: Number, default: 0 },
-    lastDailyClaim: { type: Number, default: 0 },
+    firstName: String,
+    photoUrl: String,
+    credits: { type: Number, default: 100 },
+    lastLogin: { type: Date, default: Date.now },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

@@ -112,65 +112,46 @@ async function checkOtherExtensions() {
     });
 }
 
-async function clearTargetData() {
-    console.log("[SST Security] Performing deep cleaning for ChatGPT...");
-
-    // Auth and core domains
-    const origins = [
-        "https://chatgpt.com",
-        "https://www.chatgpt.com",
-        "https://auth.openai.com",
-        "https://auth0.com",
-        "https://ab.chatgpt.com"
-    ];
-
-    return new Promise((resolve) => {
-        chrome.browsingData.remove({
-            "origins": origins
-        }, {
-            "cache": true,
-            "cookies": true,
-            "localStorage": true,
-            "indexedDB": true,
-            "serviceWorkers": true
-        }, resolve);
-    });
-}
-
 async function handleSetCookies(cookies) {
     let successCount = 0;
     let errors = [];
 
-    // 1. Deep clean before injection
-    await clearTargetData();
-
     for (const cookie of cookies) {
         try {
-            // Construct base URL
+            // Construct the URL required by the API
+            // Usually https:// + domain (without leading dot)
             let rawDomain = cookie.domain;
-            const isSubdomain = rawDomain.startsWith('.');
-            const domainForUrl = isSubdomain ? rawDomain.substring(1) : rawDomain;
-            const url = `https://${domainForUrl}${cookie.path || '/'}`;
+            if (rawDomain.startsWith('.')) {
+                rawDomain = rawDomain.substring(1);
+            }
+            const url = `https://${rawDomain}${cookie.path || '/'}`;
 
+            // Prepare the details object
+            // We must filter out properties that are not accepted by chrome.cookies.set 
+            // or that need transformation.
             const cookieDetails = {
                 url: url,
                 name: cookie.name,
                 value: cookie.value,
+                domain: cookie.domain,
                 path: cookie.path || '/',
-                secure: true,
-                httpOnly: cookie.httpOnly || false
+                secure: cookie.secure,
+                httpOnly: cookie.httpOnly,
+                storeId: cookie.storeId
             };
 
-            // Essential: Domain must match exactly for wildcard cookies
-            if (isSubdomain) {
-                cookieDetails.domain = cookie.domain;
+            // sameSite handling
+            if (cookie.sameSite) {
+                // valid values: "unspecified", "no_restriction", "lax", "strict"
+                // The JSON has "no_restriction", "lax", "strict" which matches.
+                // Just ensuring case matches if needed, but usually it does.
+                // chrome expects "no_restriction" etc.
+                cookieDetails.sameSite = cookie.sameSite;
             }
 
-            // Cloudflare/Auth0 fix: Force SameSite to None for cross-site auth tokens
-            // This is critical for modern browsers to accept these cookies correctly
-            cookieDetails.sameSite = "no_restriction";
-
             // Expiration
+            // If it is NOT a session cookie, we set expiration.
+            // Note: The input JSON has 'session' boolean.
             if (!cookie.session && cookie.expirationDate) {
                 cookieDetails.expirationDate = cookie.expirationDate;
             }

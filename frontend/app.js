@@ -21,9 +21,8 @@ async function initApp() {
 
     if (data.success) {
       currentUser = data.user;
-      const formattedBalance = (parseFloat(data.credits) || 0).toFixed(2);
-      document.getElementById('user-coins').textContent = `$${formattedBalance}`;
-      console.log(`Welcome back, ${currentUser.first_name || 'User'}! Balance: $${formattedBalance}`);
+      document.getElementById('user-coins').textContent = data.credits;
+      console.log(`Welcome back, ${currentUser.first_name || 'User'}! Balance: ${data.credits} Coins`);
     } else {
       // Invalid session
       localStorage.clear();
@@ -42,42 +41,43 @@ function logout() {
 
 // COOKIE_DATA is now fetched remotely from /api/cookies connected to Cloudflare
 
-const statusMessage = document.getElementById('status-message'); // Global fallback status
+const injectBtn = document.getElementById('inject-btn');
+const statusMessage = document.getElementById('status-message');
 const extStatus = document.getElementById('ext-status');
 
-let currentActiveBtn = null;
-let currentActiveStatus = null;
-let currentSiteUrl = "https://chatgpt.com"; // Default fallback
-
 // Helper to update UI
-function updateStatus(success, message, localStatusContainer) {
-  const target = localStatusContainer || statusMessage;
-  target.classList.remove('hidden');
+function updateStatus(success, message) {
+  statusMessage.classList.remove('hidden');
 
   // Reset classes
-  target.classList.remove('bg-green-50', 'text-green-600', 'border-green-100');
-  target.classList.remove('bg-red-50', 'text-red-600', 'border-red-100');
+  statusMessage.classList.remove('bg-green-50', 'text-green-600', 'border-green-100');
+  statusMessage.classList.remove('bg-red-50', 'text-red-600', 'border-red-100');
 
   // Force reflow
-  void target.offsetWidth;
+  void statusMessage.offsetWidth;
 
+  // Use innerHTML to ensure wrapper structure exists (it is empty in HTML)
   const iconClass = success ? 'fa-solid fa-circle-check' : 'fa-solid fa-triangle-exclamation';
-  const msgText = message || (success ? "Session ready!" : "Injection failed.");
+  const msgText = message || (success ? "Session injected successfully!" : "Injection failed.");
 
   if (success) {
-    target.classList.add('bg-green-50', 'text-green-600', 'border-green-100');
+    statusMessage.classList.add('bg-green-50', 'text-green-600', 'border-green-100');
   } else {
-    target.classList.add('bg-red-50', 'text-red-600', 'border-red-100');
+    statusMessage.classList.add('bg-red-50', 'text-red-600', 'border-red-100');
   }
 
-  target.innerHTML = `<i class="${iconClass}"></i> <span class="ml-2">${msgText}</span>`;
+  statusMessage.innerHTML = `<i class="${iconClass}"></i> <span class="ml-2 font-medium">${msgText}</span>`;
 }
 
-// 1. Check if extension is ready
+// 1. Check if extension is ready (optional handshake)
 const checkExtension = () => {
+  // We try to dispatch a 'PING' event and see if we get a pong back instantly or via listener
+  // Actually, simpler: The Content Script can inject a data attribute on body
   if (document.body.dataset.extensionInstalled) {
     extStatus.textContent = "Connected";
+    // Remove pending styles
     extStatus.classList.remove('bg-gray-100', 'text-gray-500');
+    // Add connected styles
     extStatus.classList.add('bg-green-100', 'text-green-600', 'border', 'border-green-200');
   } else {
     setTimeout(checkExtension, 500);
@@ -85,62 +85,63 @@ const checkExtension = () => {
 };
 checkExtension();
 
-// 2. Handle Multiple Button Clicks
-document.addEventListener('click', async (e) => {
-  const btn = e.target.closest('.inject-btn');
-  if (!btn) return;
-
-  const toolId = btn.dataset.toolId || 'app1';
-  currentSiteUrl = btn.dataset.siteUrl || "https://chatgpt.com";
-  currentActiveBtn = btn;
-  currentActiveStatus = btn.parentElement.querySelector('.status-msg');
+// 2. Handle Button Click
+injectBtn.addEventListener('click', async () => {
+  const toolId = injectBtn.dataset.toolId || 'app1';
 
   // Add loading state
-  btn.style.opacity = '0.7';
-  btn.innerHTML = '<span class="btn-content"><i class="fa-solid fa-spinner fa-spin"></i><span>Loading...</span></span>';
+  injectBtn.style.opacity = '0.7';
+  injectBtn.innerHTML = '<span class="btn-content"><i class="fa-solid fa-spinner fa-spin"></i><span>Fetching...</span></span>';
 
   try {
+    // 1. Fetch remote cookies from server for specific tool
     const response = await fetch(`/api/cookies/${toolId}`);
     const data = await response.json();
 
     if (data.success) {
+      // 2. Dispatch Event with remote cookies
       const event = new CustomEvent('SST_INJECT_COOKIES', { detail: { cookies: data.cookies } });
       document.dispatchEvent(event);
-      console.log(`Remote cookies for ${toolId} fetched`);
+      console.log(`Remote cookies for ${toolId} fetched and dispatched`);
     } else {
-      updateStatus(false, "No session found.", currentActiveStatus);
-      resetBtn(btn);
+      updateStatus(false, "Failed to load remote cookies.");
+      resetBtn();
     }
   } catch (error) {
     console.error("Fetch Error:", error);
-    updateStatus(false, "Server Error.", currentActiveStatus);
-    resetBtn(btn);
+    updateStatus(false, "Server connection error.");
+    resetBtn();
   }
 });
 
-function resetBtn(btn) {
-  if (!btn) return;
-  btn.style.opacity = '1';
-  btn.innerHTML = '<span class="btn-content"><i class="fa-solid fa-bolt"></i><span>Access Session</span></span><div class="btn-glow"></div>';
+function resetBtn() {
+  injectBtn.style.opacity = '1';
+  injectBtn.innerHTML = '<span class="btn-content"><i class="fa-solid fa-bolt"></i><span>Access Session</span></span><div class="btn-glow"></div>';
 }
 
 // 3. Listen for Response from Content Script
 document.addEventListener('SST_INJECT_RESPONSE', (e) => {
   const { success, error } = e.detail;
 
-  resetBtn(currentActiveBtn);
+  // Reset button to "Access Session"
+  injectBtn.style.opacity = '1';
+  injectBtn.innerHTML = '<span class="btn-content"><i class="fa-solid fa-bolt"></i><span>Access Session</span></span><div class="btn-glow"></div>';
 
   if (success) {
-    updateStatus(true, "Session Started!", currentActiveStatus);
+    updateStatus(true);
+    console.log("Cookies injected successfully");
+
+    // Open ChatGPT after a short delay to allow cookies to settle
     setTimeout(() => {
-      window.open(currentSiteUrl, '_blank');
+      window.open('https://chatgpt.com', '_blank');
     }, 1000);
   } else {
-    updateStatus(false, error || "Failed.", currentActiveStatus);
+    updateStatus(false, error || "Injection failed.");
+    console.error("Cookie injection failed", error);
+
+    // If error is about other extensions, show the disable button
     if (error && error.includes("delete other extensions")) {
-      // Show global disable button if visible
-      const disableGlobal = document.getElementById('disable-ext-btn');
-      if (disableGlobal) disableGlobal.classList.remove('hidden');
+      document.getElementById('disable-ext-btn').classList.remove('hidden');
     }
   }
 });

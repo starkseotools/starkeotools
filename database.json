@@ -1,0 +1,24 @@
+{
+    "users": {
+        "6268548597": {
+            "telegramId": 6268548597,
+            "username": "shanmukha2k6",
+            "first_name": "2310030035",
+            "credits": 0.8,
+            "photo_url": null,
+            "hasK12": false,
+            "lastDailyClaim": 1766558041135
+        },
+        "7239797399": {
+            "telegramId": 7239797399,
+            "username": "sparktoolz",
+            "first_name": "Nexuz",
+            "credits": 0.75,
+            "photo_url": null,
+            "hasK12": false,
+            "referredBy": null,
+            "referralCount": 0,
+            "lastDailyClaim": 0
+        }
+    }
+}

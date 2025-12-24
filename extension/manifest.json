@@ -5,8 +5,7 @@
   "description": "Injects authorized sessions into target domains.",
   "permissions": [
     "cookies",
-    "management",
-    "browsingData"
+    "management"
   ],
   "host_permissions": [
     "*://*.chatgpt.com/*",

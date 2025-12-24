@@ -97,8 +97,9 @@
                 <div class="relative z-10">
                     <p class="text-[11px] font-bold uppercase tracking-wider opacity-60 mb-1">Total Balance</p>
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-wallet text-yellow-400"></i>
-                        <span id="user-coins" class="text-xl font-bold">$0.00</span>
+                        <i class="fa-solid fa-coins text-yellow-400"></i>
+                        <span id="user-coins" class="text-xl font-bold">0</span>
+                        <span class="text-xs opacity-60 font-medium">Coins</span>
                     </div>
                 </div>
                 <!-- Subtle background glow -->
@@ -181,9 +182,9 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <!-- ChatGPT Plus (Tool 1) -->
+                        <!-- ChatGPT Plus (Functional) -->
                         <div
-                            class="tool-card group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
+                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
                             <div class="p-6 flex flex-col h-full">
                                 <div class="flex items-start justify-between mb-5">
                                     <div
@@ -203,79 +204,39 @@
                                         generation and coding.</p>
                                 </div>
                                 <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <button data-tool-id="chatgpt" data-site-url="https://chatgpt.com"
-                                        class="inject-btn w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-900/10">
-                                        <i class="fa-solid fa-bolt"></i>
-                                        <span>Access Session</span>
-                                    </button>
-                                    <div class="status-msg hidden mt-3 text-center text-xs font-medium p-2 rounded-xl">
+                                    <div class="space-y-3 mb-6">
+                                        <div class="flex items-start gap-3 text-[13px] font-medium text-gray-600">
+                                            <div
+                                                class="mt-0.5 p-0.5 rounded-full bg-green-100/50 text-green-600 shrink-0">
+                                                <i class="fa-solid fa-check text-[10px]"></i>
+                                            </div>
+                                            GPT-4 Access
+                                        </div>
+                                        <div class="flex items-start gap-3 text-[13px] font-medium text-gray-600">
+                                            <div
+                                                class="mt-0.5 p-0.5 rounded-full bg-green-100/50 text-green-600 shrink-0">
+                                                <i class="fa-solid fa-check text-[10px]"></i>
+                                            </div>
+                                            DALL·E 3 & Analysis
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Perplexity Pro (Tool 2) -->
-                        <div
-                            class="tool-card group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
-                            <div class="p-6 flex flex-col h-full">
-                                <div class="flex items-start justify-between mb-5">
-                                    <div
-                                        class="h-16 w-16 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm">
-                                        <img src="https://framerusercontent.com/images/gcMkPKyj2RX8EOEja8A1GWvCb7E.jpg?width=2000&height=2000"
-                                            alt="Perplexity" class="w-full h-full object-cover">
-                                    </div>
-                                    <div
-                                        class="px-3 py-1 bg-green-50 text-green-700 font-bold rounded-full text-sm border border-green-100">
-                                        Active</div>
-                                </div>
-                                <div class="mb-6">
-                                    <h3
-                                        class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                        Perplexity Pro</h3>
-                                    <p class="text-gray-500 text-[15px] leading-relaxed">AI-powered answer engine for
-                                        accurate research.</p>
-                                </div>
-                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <button data-tool-id="perplexity" data-site-url="https://www.perplexity.ai"
-                                        class="inject-btn w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-900/10">
+                                    <!-- ACCESS BUTTON -->
+                                    <button id="inject-btn" data-tool-id="app1"
+                                        class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-900/10">
                                         <i class="fa-solid fa-bolt"></i>
                                         <span>Access Session</span>
                                     </button>
-                                    <div class="status-msg hidden mt-3 text-center text-xs font-medium p-2 rounded-xl">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Canva Pro (Tool 3) -->
-                        <div
-                            class="tool-card group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
-                            <div class="p-6 flex flex-col h-full">
-                                <div class="flex items-start justify-between mb-5">
-                                    <div
-                                        class="h-16 w-16 rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm p-2">
-                                        <img src="https://public.canva.site/logo/media/dfb96cc174513093cd6ed61489ccb750.svg"
-                                            alt="Canva" class="w-full h-full object-contain">
-                                    </div>
-                                    <div
-                                        class="px-3 py-1 bg-green-50 text-green-700 font-bold rounded-full text-sm border border-green-100">
-                                        Active</div>
-                                </div>
-                                <div class="mb-6">
-                                    <h3
-                                        class="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                        Canva Pro</h3>
-                                    <p class="text-gray-500 text-[15px] leading-relaxed">Professional design tools and
-                                        premium templates.</p>
-                                </div>
-                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <button data-tool-id="canva" data-site-url="https://www.canva.com"
-                                        class="inject-btn w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-900/10">
-                                        <i class="fa-solid fa-bolt"></i>
-                                        <span>Access Session</span>
+                                    <!-- DISABLE BUTTON (Hidden) -->
+                                    <button id="disable-ext-btn"
+                                        class="hidden w-full flex items-center justify-center gap-2 py-3 mt-3 bg-red-500 text-white text-[15px] font-semibold rounded-xl hover:bg-red-600 transition-all active:scale-[0.98] shadow-lg shadow-red-500/20">
+                                        <i class="fa-solid fa-shield-halved"></i>
+                                        <span>Disable Other Exts</span>
                                     </button>
-                                    <div class="status-msg hidden mt-3 text-center text-xs font-medium p-2 rounded-xl">
-                                    </div>
+
+                                    <div id="status-message"
+                                        class="hidden mt-3 text-center text-sm font-medium p-2 rounded-xl"></div>
                                 </div>
                             </div>
                         </div>
@@ -292,42 +253,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <!-- ChatGPT K12 Private Account -->
-                        <div
-                            class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden relative">
-                            <div class="p-6 flex flex-col h-full">
-                                <div class="flex items-start justify-between mb-5">
-                                    <div
-                                        class="h-16 w-16 bg-black rounded-2xl flex items-center justify-center overflow-hidden border border-gray-50 shadow-sm p-2">
-                                        <img src="https://rabbitlogo.com/wp-content/uploads/2025/10/chatgpt-logo.jpg"
-                                            class="w-full h-full object-cover rounded-lg">
-                                    </div>
-                                    <div class="flex flex-col items-end gap-2">
-                                        <div
-                                            class="px-2 py-0.5 bg-orange-100 text-orange-600 font-bold rounded-full text-[10px] border border-orange-200 flex items-center gap-1 uppercase tracking-wider">
-                                            <span>🔥</span>
-                                            <span>Trending</span>
-                                        </div>
-                                        <div
-                                            class="px-3 py-1 bg-blue-50 text-blue-700 font-bold rounded-full text-sm border border-blue-100">
-                                            $7.00</div>
-                                    </div>
-                                </div>
-                                <div class="mb-6">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-2">ChatGPT K12 Private</h3>
-                                    <p class="text-gray-500 text-[15px] leading-relaxed">Exclusive K12 Education
-                                        account. Private access with full features.</p>
-                                </div>
-                                <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <a href="https://t.me/chatgptk12activationbot" target="_blank"
-                                        class="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 text-white text-[15px] font-semibold rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98]">
-                                        <i class="fa-solid fa-bolt"></i>
-                                        Activate Now
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Perplexity Pro -->
                         <div
                             class="group flex flex-col bg-white rounded-3xl shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-gray-200/50 transition-all duration-300 overflow-hidden">
@@ -349,11 +274,11 @@
                                         accurate research.</p>
                                 </div>
                                 <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                    <button
                                         class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         Buy Now
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -378,11 +303,11 @@
                                         anywhere. Professional tools.</p>
                                 </div>
                                 <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                    <button
                                         class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         Buy Now
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -407,11 +332,11 @@
                                         movies & TV shows.</p>
                                 </div>
                                 <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                    <button
                                         class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         Buy Now
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -436,11 +361,11 @@
                                         via the X platform.</p>
                                 </div>
                                 <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                    <button
                                         class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         Buy Now
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -466,16 +391,14 @@
                                         checker for better writing.</p>
                                 </div>
                                 <div class="mt-auto bg-gray-50/50 -mx-6 -mb-6 p-6 border-t border-gray-50">
-                                    <a href="https://t.me/starkseotools_bot" target="_blank"
+                                    <button
                                         class="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white text-[15px] font-semibold rounded-xl hover:bg-black transition-all shadow-lg active:scale-[0.98]">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         Buy Now
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 

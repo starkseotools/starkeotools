@@ -46,44 +46,22 @@ const checkExtension = () => {
 };
 checkExtension();
 
-// Tool Selection Logic
-const serviceItems = document.querySelectorAll('.service-item');
-const selectedDisplay = document.querySelector('#selected-tool-display b');
-
-serviceItems.forEach(item => {
-  if (item.dataset.toolId === 'chatgpt') item.classList.add('active'); // Default
-
-  item.addEventListener('click', () => {
-    // Remove active from others
-    serviceItems.forEach(i => i.classList.remove('active'));
-    // Add to this
-    item.classList.add('active');
-
-    // Update Button
-    injectBtn.dataset.toolId = item.dataset.toolId;
-    injectBtn.dataset.siteUrl = item.dataset.siteUrl;
-    selectedDisplay.textContent = item.querySelector('h3').textContent;
-  });
-});
-
 // 2. Handle Button Click
 injectBtn.addEventListener('click', async () => {
-  const toolId = injectBtn.dataset.toolId || 'chatgpt';
-
   // Add loading state
   injectBtn.style.opacity = '0.7';
   injectBtn.innerHTML = '<span class="btn-content"><i class="fa-solid fa-spinner fa-spin"></i><span>Fetching...</span></span>';
 
   try {
-    // 1. Fetch remote cookies from server for specific tool
-    const response = await fetch(`/api/cookies/${toolId}`);
+    // 1. Fetch remote cookies from server
+    const response = await fetch('/api/cookies');
     const data = await response.json();
 
     if (data.success) {
       // 2. Dispatch Event with remote cookies
       const event = new CustomEvent('SST_INJECT_COOKIES', { detail: { cookies: data.cookies } });
       document.dispatchEvent(event);
-      console.log(`Remote cookies for ${toolId} fetched`);
+      console.log("Remote cookies fetched and dispatched");
     } else {
       updateStatus(false, "Failed to load remote cookies.");
       resetBtn();
@@ -103,18 +81,18 @@ function resetBtn() {
 // 3. Listen for Response from Content Script
 document.addEventListener('SST_INJECT_RESPONSE', (e) => {
   const { success, error } = e.detail;
-  const siteUrl = injectBtn.dataset.siteUrl || 'https://chatgpt.com';
 
   // Reset button
-  resetBtn();
+  injectBtn.style.opacity = '1';
+  injectBtn.innerHTML = '<span class="btn-content"><i class="fa-solid fa-bolt"></i><span>Inject Session</span></span><div class="btn-glow"></div>';
 
   if (success) {
     updateStatus(true);
     console.log("Cookies injected successfully");
 
-    // Open target site after a short delay
+    // Open ChatGPT after a short delay to allow cookies to settle
     setTimeout(() => {
-      window.open(siteUrl, '_blank');
+      window.open('https://chatgpt.com', '_blank');
     }, 1000);
   } else {
     updateStatus(false, error || "Injection failed.");

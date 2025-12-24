@@ -92,53 +92,39 @@ h1 {
     font-weight: 400;
 }
 
-.tools-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
 .service-item {
     background: #f4f4f5;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     border-radius: 12px;
-    padding: 12px;
+    padding: 16px;
+    margin-bottom: 30px;
     display: flex;
     align-items: center;
-    cursor: pointer;
-    transition: all 0.2s;
+    transition: border-color 0.2s;
 }
 
 .service-item:hover {
     border-color: var(--border-color);
-    background: #efefef;
-}
-
-.service-item.active {
-    background: white;
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow-sm);
 }
 
 .service-icon {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     color: #10a37f;
-    margin-right: 12px;
+    margin-right: 16px;
     background: white;
-    padding: 6px;
+    padding: 8px;
     border-radius: 8px;
     box-shadow: var(--shadow-sm);
 }
 
 .service-text h3 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--text-main);
 }
 
 .service-text p {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
