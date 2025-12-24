@@ -18,7 +18,8 @@ const SUPABASE_KEY = process.env.SUPABASE_KEY;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8403194805:AAErwOTnxTKTzvKuchog1T8jqKScErVgJo8';
 const K12_BOT_TOKEN = process.env.K12_BOT_TOKEN || '8275282497:AAEdM3I9DHErbFFZB5W58sZMQcSDmffsgX8';
 const ADMIN_ID = process.env.ADMIN_ID || '6268548597';
-const APP_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.APP_URL;
+// Smart APP_URL detection for Vercel
+const APP_URL = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
 
 // Supabase Connection
 let supabase = null;
